@@ -3,7 +3,7 @@
 class NoCaptcha {
 
 	const CLIENT_API = 'https://www.google.com/recaptcha/api.js';
-	const VERYFY_URL = 'https://www.google.com/recaptcha/api/siteverify';
+	const VERIFY_URL = 'https://www.google.com/recaptcha/api/siteverify';
 
 	/**
 	 * //
@@ -99,7 +99,7 @@ class NoCaptcha {
 	 */
 	protected function sendRequestVerify(array $query = array())
 	{
-		$link = static::VERYFY_URL.'?'.http_build_query($query);
+		$link = static::VERIFY_URL.'?'.http_build_query($query);
 
 		$response = file_get_contents($link);
 
