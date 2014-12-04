@@ -73,7 +73,7 @@ $validate = Validator::make(Input::all(), [
 
 Checkout example below:
 
-```
+```php
 <?php
 
 require_once "vendor/autoload.php";
