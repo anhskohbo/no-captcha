@@ -11,7 +11,7 @@ Add the following line to the `require` section of `composer.json`:
 ```json
 {
     "require": {
-        "anhskohbo/no-captcha": "dev-master"
+        "anhskohbo/no-captcha": "*"
     }
 }
 ```
