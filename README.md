@@ -1,4 +1,6 @@
-no-captcha
+No CAPTCHA reCAPTCHA
 ==========
 
-No CAPTCHA reCAPTCHA For Laravel.
+[![Build Status](https://travis-ci.org/anhskohbo/no-captcha.svg?branch=master&style=flat-square)](https://travis-ci.org/anhskohbo/no-captcha)
+
+[Updating...]
