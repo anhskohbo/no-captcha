@@ -6,5 +6,6 @@ return array(
 	'sitekey' => '',
 
 	'lang'    => '',
+	'enabled' => true,
 
 );

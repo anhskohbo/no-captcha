@@ -27,18 +27,26 @@ class NoCaptcha {
 	protected $lang;
 
 	/**
+	 * @var bool
+	 */
+	protected $enabled;
+
+	/**
 	 * //
-	 * 
+	 *
 	 * @param string $secret
 	 * @param string $sitekey
+	 * @param null   $lang
+	 * @param bool   $enabled
 	 */
-	public function __construct($secret, $sitekey, $lang = null)
+	public function __construct($secret, $sitekey, $lang = null, $enabled = true)
 	{
 		$this->lang = $lang;
 
 		$this->secret = $secret;
 
 		$this->sitekey = $sitekey;
+		$this->enabled = $enabled;
 	}
 
 	/**
@@ -48,6 +56,10 @@ class NoCaptcha {
 	 */
 	public function display($attributes = array())
 	{
+		if ( ! $this->enabled) {
+			return '<input type="hidden" name="g-recaptcha-response" value="1" />';
+		}
+
 		$attributes['data-sitekey'] = $this->sitekey;
 
 		$html  = '<script src="'.$this->getJsLink().'"></script>'."\n";
@@ -65,6 +77,10 @@ class NoCaptcha {
 	 */
 	public function verifyResponse($response, $clientIp = null)
 	{
+		if ( ! $this->enabled) {
+			return true;
+		}
+
 		if (empty($response)) return false;
 
 		$response = $this->sendRequestVerify(array(
