@@ -101,7 +101,12 @@ class NoCaptcha {
 	{
 		$link = static::VERIFY_URL.'?'.http_build_query($query);
 
-		$response = file_get_contents($link);
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, $link);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($curl, CURLOPT_TIMEOUT, 10);
+		$response = curl_exec($curl);
+		curl_close($curl);
 
 		return json_decode($response, true);
 	}
