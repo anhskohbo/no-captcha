@@ -31,7 +31,8 @@ Add ServiceProvider to the providers array in `app/config/app.php`.
 ### Configuration
 Run `php artisan config:publish anhskohbo/no-captcha` (`publish:config` if you use Laravel 5).
 
-Fill secret and sitekey config in `app/config/packages/anhskohbo/no-captcha/config.php` file:
+Fill secret and sitekey config in `app/config/packages/anhskohbo/no-captcha/config.php` file:  
+You can optionally specify a [language code](https://developers.google.com/recaptcha/docs/language).
 
 ```php
 <?php
@@ -41,8 +42,13 @@ return array(
 	'secret'  => '',
 	'sitekey' => '',
 
+	'lang'    => '',
+	'enabled' => true,
+
 );
+
 ```
+By default, reCAPTCHA will be disabled while running tests. To change this, update (or delete) `app/config/packages/anhskohbo/no-captcha/testing/config.php` 
 
 ### Usage
 
