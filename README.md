@@ -46,19 +46,38 @@ return array(
 
 ### Usage
 
-Display reCAPTCHA:
+##### Display reCAPTCHA
 
+Insert reCAPTCHA inside your form using one of this examples:
+
+For Laravel 4
 ```php
-<?php echo Form::open() ?>
-    
-    <?php echo Form::captcha() ?>
-    // <?php app('captcha')->display(); // for Laravel 5 ?>
+<?php echo Form::captcha() ?>
+````
 
-    <?php echo Form::submit() ?>
-<?php echo Form::close() ?>
+For Laravel 4 using Blade syntax
+```php
+{{ Form::captcha() }}
 ```
 
-Validate, add `'g-recaptcha-response' => 'required|captcha'` to rules array.
+For Laravel 5
+```php
+<?php echo app('captcha')->display(); ?>
+```
+
+For Laravel 5 using Blade syntax
+```php
+{!! app('captcha')->display(); !!}
+```
+
+For Laravel 5 with `illuminate/html` package using Blade syntax
+```php
+{!! Form::captcha() !!}
+```
+
+##### Validation
+
+Add `'g-recaptcha-response' => 'required|captcha'` to rules array.
 
 ```php
 
