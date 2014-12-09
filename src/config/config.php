@@ -2,9 +2,9 @@
 
 return array(
 
-	'secret'  => '',
-	'sitekey' => '',
+	'secret'  => getenv('NOCAPTCHA_SECRET') ?: '',
+	'sitekey' => getenv('NOCAPTCHA_SITEKEY') ?: '',
 
-	'lang'    => '',
+	'lang'    => app()->getLocale(),
 
 );
