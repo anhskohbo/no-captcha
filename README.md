@@ -110,7 +110,7 @@ if ( ! empty($_POST)) {
 
 <form action="?" method="POST">
     <?php echo $captcha->display(); ?>
-    <button type="submit">Submit</submit>
+    <button type="submit">Submit</button>
 </form>
 
 ```
