@@ -35,9 +35,7 @@ class NoCaptcha {
 	public function __construct($secret, $sitekey, $lang = null)
 	{
 		$this->lang = $lang;
-
 		$this->secret = $secret;
-
 		$this->sitekey = $sitekey;
 	}
 
