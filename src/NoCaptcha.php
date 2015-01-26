@@ -1,5 +1,7 @@
 <?php namespace Anhskohbo\NoCaptcha;
 
+use Symfony\Component\HttpFoundation\Request;
+
 class NoCaptcha {
 
 	const CLIENT_API = 'https://www.google.com/recaptcha/api.js';
@@ -22,19 +24,11 @@ class NoCaptcha {
 	/**
 	 * //
 	 * 
-	 * @var string
-	 */
-	protected $lang;
-
-	/**
-	 * //
-	 * 
 	 * @param string $secret
 	 * @param string $sitekey
 	 */
-	public function __construct($secret, $sitekey, $lang = null)
+	public function __construct($secret, $sitekey)
 	{
-		$this->lang = $lang;
 		$this->secret = $secret;
 		$this->sitekey = $sitekey;
 	}
@@ -44,11 +38,11 @@ class NoCaptcha {
 	 * 
 	 * @return string
 	 */
-	public function display($attributes = array())
+	public function display($attributes = [], $lang = null)
 	{
 		$attributes['data-sitekey'] = $this->sitekey;
 
-		$html  = '<script src="'.$this->getJsLink().'" async defer></script>'."\n";
+		$html  = '<script src="'.$this->getJsLink($lang).'" async defer></script>'."\n";
 		$html .= '<div class="g-recaptcha"'.$this->buildAttributes($attributes).'></div>';
 
 		return $html;
@@ -65,11 +59,11 @@ class NoCaptcha {
 	{
 		if (empty($response)) return false;
 
-		$response = $this->sendRequestVerify(array(
+		$response = $this->sendRequestVerify([
 			'secret'   => $this->secret,
 			'response' => $response,
 			'remoteip' => $clientIp
-		));
+		]);
 
 		return isset($response['success']) && $response['success'] === true;
 	}
@@ -77,16 +71,25 @@ class NoCaptcha {
 	/**
 	 * //
 	 * 
+	 * @param  Request $request
+	 * @return bool
+	 */
+	public function verifyRequest(Request $request)
+	{
+		return $this->verifyResponse(
+			$request->get('g-recaptcha-response'),
+			$request->getClientIp()
+		);
+	}
+
+	/**
+	 * //
+	 * 
 	 * @return string
 	 */
-	public function getJsLink()
+	public function getJsLink($lang = null)
 	{
-		if ($this->lang)
-		{
-			return static::CLIENT_API.'?hl='.$this->lang;
-		}
-
-		return static::CLIENT_API;
+		return $lang ? static::CLIENT_API.'?hl='.$lang : static::CLIENT_API;
 	}
 
 	/**
@@ -95,7 +98,7 @@ class NoCaptcha {
 	 * @param  array  $query
 	 * @return array
 	 */
-	protected function sendRequestVerify(array $query = array())
+	protected function sendRequestVerify(array $query = [])
 	{
 		$link = static::VERIFY_URL.'?'.http_build_query($query);
 
@@ -112,7 +115,7 @@ class NoCaptcha {
 	 */
 	protected function buildAttributes(array $attributes)
 	{
-		$html = array();
+		$html = [];
 
 		foreach ($attributes as $key => $value)
 		{

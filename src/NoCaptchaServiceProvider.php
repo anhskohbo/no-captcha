@@ -20,8 +20,6 @@ class NoCaptchaServiceProvider extends ServiceProvider {
 	{
 		$app = $this->app;
 
-		$app['config']->package('anhskohbo/no-captcha', __DIR__.'/config');
-
 		$app['validator']->extend('captcha', function($attribute, $value) use ($app)
 		{
 			return $app['captcha']->verifyResponse($value, $app['request']->getClientIp());
@@ -29,9 +27,9 @@ class NoCaptchaServiceProvider extends ServiceProvider {
 
 		if ($app->bound('form'))
 		{
-			$app['form']->macro('captcha', function($attributes = array()) use ($app)
+			$app['form']->macro('captcha', function($attributes = []) use ($app)
 			{
-				return $app['captcha']->display($attributes);
+				return $app['captcha']->display($attributes, $app->getLocale());
 			});
 		}
 	}
@@ -43,12 +41,15 @@ class NoCaptchaServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
+		$this->publishes([
+			__DIR__.'/config/captcha.php' => $this->app->configPath().'/captcha.php'
+		]);
+
 		$this->app->bind('captcha', function($app)
 		{
 			return new NoCaptcha(
-				$app['config']->get('no-captcha::secret'),
-				$app['config']->get('no-captcha::sitekey'),
-				$app['config']->get('no-captcha::lang')
+				$app['config']['captcha.secret'],
+				$app['config']['captcha.sitekey']
 			);
 		});
 	}
