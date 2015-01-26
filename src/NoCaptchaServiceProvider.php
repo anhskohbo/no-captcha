@@ -20,6 +20,10 @@ class NoCaptchaServiceProvider extends ServiceProvider {
 	{
 		$app = $this->app;
 
+		$this->publishes([
+			__DIR__.'/config/captcha.php' => config_path('captcha.php')
+		]);
+
 		$app['validator']->extend('captcha', function($attribute, $value) use ($app)
 		{
 			return $app['captcha']->verifyResponse($value, $app['request']->getClientIp());
@@ -41,10 +45,6 @@ class NoCaptchaServiceProvider extends ServiceProvider {
 	 */
 	public function register()
 	{
-		$this->publishes([
-			__DIR__.'/config/captcha.php' => $this->app->configPath().'/captcha.php'
-		]);
-
 		$this->app->bind('captcha', function($app)
 		{
 			return new NoCaptcha(
