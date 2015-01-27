@@ -20,9 +20,7 @@ class NoCaptchaServiceProvider extends ServiceProvider {
 	{
 		$app = $this->app;
 
-		$this->publishes([
-			__DIR__.'/config/captcha.php' => config_path('captcha.php')
-		]);
+		$this->mergeConfigFrom('captcha', __DIR__.'/config/captcha.php');
 
 		$app['validator']->extend('captcha', function($attribute, $value) use ($app)
 		{
