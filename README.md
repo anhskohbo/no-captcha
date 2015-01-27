@@ -3,6 +3,7 @@ No CAPTCHA reCAPTCHA [![Build Status](https://travis-ci.org/anhskohbo/no-captcha
 
 ![recaptcha_anchor 2x](https://cloud.githubusercontent.com/assets/1529454/5291635/1c426412-7b88-11e4-8d16-46161a081ece.gif)
 
+> For Laravel 5, please use `master` brand.
 
 ## Installation
 
@@ -11,14 +12,14 @@ Add the following line to the `require` section of `composer.json`:
 ```json
 {
     "require": {
-        "anhskohbo/no-captcha": "*"
+        "anhskohbo/no-captcha": "1.*"
     }
 }
 ```
 
 Run `composer update`.
 
-## Laravel
+## Laravel 4
 
 ### Setup
 
@@ -29,6 +30,7 @@ Add ServiceProvider to the providers array in `app/config/app.php`.
 ```
 
 ### Configuration
+
 Run `php artisan config:publish anhskohbo/no-captcha`.
 
 Fill secret and sitekey config in `app/config/packages/anhskohbo/no-captcha/config.php` file:
@@ -50,14 +52,11 @@ return array(
 
 Insert reCAPTCHA inside your form using one of this examples:
 
-For Laravel 4
 ```php
-<?php echo Form::captcha() ?>
-````
-
-For Laravel 4 using Blade syntax
-```php
-{{ Form::captcha() }}
+{{ Form::open() }}
+	{{ Form::captcha() }}
+	{{ Form::submit() }}
+{{ Form::close() }}
 ```
 
 ##### Validation
