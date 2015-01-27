@@ -3,7 +3,7 @@ No CAPTCHA reCAPTCHA [![Build Status](https://travis-ci.org/anhskohbo/no-captcha
 
 ![recaptcha_anchor 2x](https://cloud.githubusercontent.com/assets/1529454/5291635/1c426412-7b88-11e4-8d16-46161a081ece.gif)
 
-> For Laravel 5, please use `master` brand.
+> For Laravel 5, please use `master` branch.
 
 ## Installation
 
