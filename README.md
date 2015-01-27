@@ -29,7 +29,7 @@ Add ServiceProvider to the providers array in `app/config/app.php`.
 ```
 
 ### Configuration
-Run `php artisan config:publish anhskohbo/no-captcha` (`publish:config` if you use Laravel 5).
+Run `php artisan config:publish anhskohbo/no-captcha`.
 
 Fill secret and sitekey config in `app/config/packages/anhskohbo/no-captcha/config.php` file:
 
@@ -60,21 +60,6 @@ For Laravel 4 using Blade syntax
 {{ Form::captcha() }}
 ```
 
-For Laravel 5
-```php
-<?php echo app('captcha')->display(); ?>
-```
-
-For Laravel 5 using Blade syntax
-```php
-{!! app('captcha')->display(); !!}
-```
-
-For Laravel 5 with `illuminate/html` package using Blade syntax
-```php
-{!! Form::captcha() !!}
-```
-
 ##### Validation
 
 Add `'g-recaptcha-response' => 'required|captcha'` to rules array.
@@ -87,7 +72,6 @@ $validate = Validator::make(Input::all(), [
 
 ```
 
-
 ## Without Laravel
 
 Checkout example below:
@@ -97,9 +81,9 @@ Checkout example below:
 
 require_once "vendor/autoload.php";
 
-$secret  = '';
-$sitekey = '';
-$captcha = new \Anhskohbo\NoCaptcha\NoCaptcha($secret, $sitekey);
+use Anhskohbo\NoCaptcha\NoCaptcha;
+
+$captcha = new NoCaptcha('[secret]', '[sitekey]');
 
 if ( ! empty($_POST)) {
     var_dump($captcha->verifyResponse($_POST['g-recaptcha-response']));
