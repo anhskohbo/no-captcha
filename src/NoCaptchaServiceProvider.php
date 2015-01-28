@@ -20,7 +20,7 @@ class NoCaptchaServiceProvider extends ServiceProvider {
 	{
 		$app = $this->app;
 
-		$this->mergeConfigFrom('captcha', __DIR__.'/config/captcha.php');
+		$this->bootConfig();
 
 		$app['validator']->extend('captcha', function($attribute, $value) use ($app)
 		{
@@ -34,6 +34,20 @@ class NoCaptchaServiceProvider extends ServiceProvider {
 				return $app['captcha']->display($attributes, $app->getLocale());
 			});
 		}
+	}
+	
+	/**
+	 * //
+	 * 
+	 * @return void
+	 */
+	protected function bootConfig()
+	{
+		$path = __DIR__.'/config/captcha.php';
+
+		$this->mergeConfigFrom('captcha', $path);
+
+		$this->publishes([$path => config_path('captcha.php')]);
 	}
 
 	/**
