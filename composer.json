@@ -17,6 +17,5 @@
         "psr-4": {
             "Anhskohbo\\NoCaptcha\\": "src/"
         }
-    },
-    "minimum-stability": "dev"
+    }
 }
