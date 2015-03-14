@@ -1,6 +1,6 @@
 <?php namespace Anhskohbo\NoCaptcha\Facades;
 
-use Illuminate\Support\Facade\Facade;
+use Illuminate\Support\Facades\Facade;
 
 class NoCaptcha extends Facade {
 
