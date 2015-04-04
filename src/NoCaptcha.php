@@ -20,6 +20,12 @@ class NoCaptcha {
 	 * @var string
 	 */
 	protected $sitekey;
+	
+	/**
+	 * Theme NoCaptcha (light, dark)
+	 * @val string
+	 */
+	protected $theme;
 
 	/**
 	 * //
@@ -27,10 +33,11 @@ class NoCaptcha {
 	 * @param string $secret
 	 * @param string $sitekey
 	 */
-	public function __construct($secret, $sitekey)
+	public function __construct($secret, $sitekey, $theme)
 	{
 		$this->secret = $secret;
 		$this->sitekey = $sitekey;
+		$this->theme = $theme;
 	}
 
 	/**
@@ -41,6 +48,7 @@ class NoCaptcha {
 	public function display($attributes = [], $lang = null)
 	{
 		$attributes['data-sitekey'] = $this->sitekey;
+		$attributes['data-theme'] = $this->theme;
 
 		$html  = '<script src="'.$this->getJsLink($lang).'" async defer></script>'."\n";
 		$html .= '<div class="g-recaptcha"'.$this->buildAttributes($attributes).'></div>';
