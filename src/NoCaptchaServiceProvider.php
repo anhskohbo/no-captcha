@@ -61,7 +61,8 @@ class NoCaptchaServiceProvider extends ServiceProvider {
 		{
 			return new NoCaptcha(
 				$app['config']['captcha.secret'],
-				$app['config']['captcha.sitekey']
+				$app['config']['captcha.sitekey'],
+				$app['config']['captcha.theme']
 			);
 		});
 	}
