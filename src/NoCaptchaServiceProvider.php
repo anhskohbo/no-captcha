@@ -42,7 +42,9 @@ class NoCaptchaServiceProvider extends ServiceProvider
 
         $this->mergeConfigFrom($path, 'captcha');
 
-        $this->publishes([$path => config_path('captcha.php')]);
+        if (function_exists('config_path')) {
+            $this->publishes([$path => config_path('captcha.php')]);
+        }
     }
 
     /**
