@@ -26,7 +26,7 @@ Run `composer update`.
 Add ServiceProvider to the providers array in `app/config/app.php`.
 
 ```
-'Anhskohbo\NoCaptcha\NoCaptchaServiceProvider',
+Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
 ```
 
 ### Configuration
