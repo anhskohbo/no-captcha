@@ -107,7 +107,7 @@ class NoCaptcha
      */
     protected function sendRequestVerify(array $query = [])
     {
-        $link = static::VERIFY_URL.'?'.http_build_query($query);
+        $link = static::VERIFY_URL. '?' .http_build_query($query);
 
         $response = file_get_contents($link);
 
