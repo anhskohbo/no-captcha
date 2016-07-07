@@ -60,7 +60,7 @@ $validate = Validator::make(Input::all(), [
 
 ### Testing
 
-When using the (Laravel Testing functionality)[http://laravel.com/docs/5.1/testing], you will need to mock out the response for the captcha form element. To do this:
+When using the [Laravel Testing functionality](http://laravel.com/docs/5.1/testing), you will need to mock out the response for the captcha form element. To do this:
 
 1) Setup NoCaptcha facade in config/app.conf
 
