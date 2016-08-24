@@ -107,9 +107,20 @@ class NoCaptcha
      */
     protected function sendRequestVerify(array $query = [])
     {
-        $link = static::VERIFY_URL.'?'.http_build_query($query);
+        // This taken from: https://github.com/google/recaptcha/blob/master/src/ReCaptcha/RequestMethod/Post.php
+        $peer_key = version_compare(PHP_VERSION, '5.6.0', '<') ? 'CN_name' : 'peer_name';
 
-        $response = file_get_contents($link);
+        $context = stream_context_create(array(
+            'http' => array(
+                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method'  => 'POST',
+                'content' => http_build_query($query, '', '&'),
+                'verify_peer' => true,
+                $peer_key     => 'www.google.com',
+            ),
+        ));
+
+        $response = file_get_contents(static::VERIFY_URL, false, $context);
 
         return json_decode($response, true);
     }
