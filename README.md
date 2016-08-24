@@ -7,17 +7,9 @@ No CAPTCHA reCAPTCHA [![Build Status](https://travis-ci.org/anhskohbo/no-captcha
 
 ## Installation
 
-Add the following line to the `require` section of `composer.json`:
-
-```json
-{
-    "require": {
-        "anhskohbo/no-captcha": "2.*"
-    }
-}
 ```
-
-Run `composer update`.
+composer require anhskohbo/no-captcha
+```
 
 ## Laravel 5
 
