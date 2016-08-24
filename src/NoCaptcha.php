@@ -112,11 +112,11 @@ class NoCaptcha
 
         $context = stream_context_create(array(
             'http' => array(
-                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-                'method'  => 'POST',
+                'header' => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method' => 'POST',
                 'content' => http_build_query($query, '', '&'),
                 'verify_peer' => true,
-                $peer_key     => 'www.google.com',
+                $peer_key => 'www.google.com',
             ),
         ));
 
