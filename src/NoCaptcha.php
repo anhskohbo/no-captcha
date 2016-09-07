@@ -35,10 +35,6 @@ class NoCaptcha
     $this->sitekey = $sitekey;
   }
 
-  // public static function setClientApiLink = ($link) {
-  //   $this->
-  // }
-
   /**
   * Render HTML captcha.
   *
