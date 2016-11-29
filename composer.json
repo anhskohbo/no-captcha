@@ -1,5 +1,5 @@
 {
-    "name": "anhskohbo/no-captcha",
+    "name": "patrickheppler/no-captcha",
     "description": "No CAPTCHA reCAPTCHA For Laravel.",
     "keywords": ["recaptcha", "no-captcha", "captcha", "laravel", "laravel4", "laravel5"],
     "license": "MIT",
