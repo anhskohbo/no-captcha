@@ -23,7 +23,7 @@ Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
 
 ### Configuration
 
-Add `NOCAPTCHA_SECRET` and `NOCAPTCHA_SITEKEY` in **.env** file:
+Add `NOCAPTCHA_SECRET` and `NOCAPTCHA_SITEKEY` in **.env** file (without brackets):
 
 ```
 NOCAPTCHA_SECRET=[secret-key]
