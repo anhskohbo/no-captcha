@@ -30,6 +30,11 @@ class NoCaptcha
     protected $http;
 
     /**
+     * API requested control
+     */
+    protected $api_requested;
+
+    /**
      * NoCaptcha.
      *
      * @param string $secret
@@ -42,6 +47,7 @@ class NoCaptcha
         $this->http = new Client([
             'timeout'  => 2.0,
         ]);
+        $this->api_requested = FALSE;
     }
 
     /**
@@ -53,7 +59,11 @@ class NoCaptcha
     {
         $attributes['data-sitekey'] = $this->sitekey;
 
-        $html = '<script src="'.$this->getJsLink($lang).'" async defer></script>'."\n";
+        $html = '';
+        if(empty($this->api_requested)){
+            $this->api_requested = TRUE;
+            $html .= '<script src="'.$this->getJsLink($lang).'" async defer></script>'."\n";
+        }
         $html .= '<div class="g-recaptcha"'.$this->buildAttributes($attributes).'></div>';
 
         return $html;
