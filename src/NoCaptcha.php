@@ -32,7 +32,7 @@ class NoCaptcha
     /**
      * API requested control
      */
-    protected $api_requested;
+    protected $api_requested = FALSE;
 
     /**
      * NoCaptcha.
@@ -47,7 +47,6 @@ class NoCaptcha
         $this->http = new Client([
             'timeout'  => 2.0,
         ]);
-        $this->api_requested = FALSE;
     }
 
     /**
