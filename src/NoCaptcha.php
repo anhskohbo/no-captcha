@@ -32,7 +32,7 @@ class NoCaptcha
     /**
      * API requested control
      */
-    protected $api_requested = FALSE;
+    protected $api_requested = false;
 
     /**
      * NoCaptcha.
@@ -59,8 +59,8 @@ class NoCaptcha
         $attributes['data-sitekey'] = $this->sitekey;
 
         $html = '';
-        if(empty($this->api_requested)){
-            $this->api_requested = TRUE;
+        if (empty($this->api_requested)) {
+            $this->api_requested = true;
             $html .= '<script src="'.$this->getJsLink($lang).'" async defer></script>'."\n";
         }
         $html .= '<div class="g-recaptcha"'.$this->buildAttributes($attributes).'></div>';
