@@ -32,7 +32,7 @@ class NoCaptcha
     /**
      * API requested control
      */
-    protected $api_requested = false;
+    protected $api_requested = 0;
 
     /**
      * NoCaptcha.
@@ -50,18 +50,46 @@ class NoCaptcha
     }
 
     /**
-     * Render HTML captcha.
+     * Render HTML captcha ( Automatically render the reCAPTCHA widget ).
      *
      * @return string
      */
     public function display($attributes = [], $lang = null)
     {
+        if ($this->api_requested !== 0) {
+            return 'To request multiple instances of NoCaptcha on the same page you must use the function multiple_display().';
+        }
+        
+        $this->api_requested = true;
+
         $attributes['data-sitekey'] = $this->sitekey;
 
+        $html = '<script src="'.$this->getJsLink($lang).'" async defer></script>'."\n";
+        $html .= '<div class="g-recaptcha"'.$this->buildAttributes($attributes).'></div>';
+
+        return $html;
+    }
+
+    /**
+     * Render multiple HTML captcha on the same page ( Explicitly render the reCAPTCHA widget ).
+     *
+     * @return string
+     */
+    public function multiple_display($attributes = [], $lang = null)
+    {
+        if ($this->api_requested === true) {
+            return 'You cannot use display() and multiple_display() from NoCaptcha on the same page.';
+        }
+        
+        $this->api_requested += 1;
+
+        $attributes['data-sitekey'] = $this->sitekey;
+        $attributes['id'] = 'grecaptcha'.$this->api_requested;
+
         $html = '';
-        if (empty($this->api_requested)) {
-            $this->api_requested = true;
-            $html .= '<script src="'.$this->getJsLink($lang).'" async defer></script>'."\n";
+        if ($this->api_requested === 1) {
+            $html .= '<script>function NoCaptchaCallback() { var elems = document.getElementsByClassName("g-recaptcha"); for (i=0; i<elems.length; i++) { grecaptcha.render(elems[i].id, {"sitekey" : "'.$this->sitekey.'"}); } }</script>'."\n";
+            $html .= '<script src="'.$this->getJsLink($lang).'?onload=NoCaptchaCallback&render=explicit" async defer></script>'."\n";
         }
         $html .= '<div class="g-recaptcha"'.$this->buildAttributes($attributes).'></div>';
 
