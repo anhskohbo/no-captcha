@@ -3,7 +3,6 @@
 namespace Anhskohbo\NoCaptcha;
 
 use Symfony\Component\HttpFoundation\Request;
-use GuzzleHttp\Client;
 
 class NoCaptcha
 {
@@ -25,11 +24,6 @@ class NoCaptcha
     protected $sitekey;
 
     /**
-     * @var \GuzzleHttp\Client
-     */
-    protected $http;
-
-    /**
      * API requested control
      */
     protected $api_requested = false;
@@ -44,9 +38,6 @@ class NoCaptcha
     {
         $this->secret = $secret;
         $this->sitekey = $sitekey;
-        $this->http = new Client([
-            'timeout'  => 2.0,
-        ]);
     }
 
     /**
@@ -125,10 +116,34 @@ class NoCaptcha
      */
     protected function sendRequestVerify(array $query = [])
     {
-        $response = $this->http->request('POST', static::VERIFY_URL, [
-            'form_params' => $query,
-        ]);
-        return json_decode($response->getBody(), true);
+        $context = $this->prepareContext($query);
+
+        return json_decode(
+            file_get_contents(static::VERIFY_URL, false, $context), true
+        );
+    }
+
+    /**
+     * Preparing data to send.
+     *
+     * @param array $query
+     * @return resource
+     */
+    public function prepareContext(array $query = [])
+    {
+        $postdata = http_build_query(
+            $query
+        );
+
+        $opts = ['http' =>
+            [
+                'method'  => 'POST',
+                'header'  => 'Content-type: application/x-www-form-urlencoded',
+                'content' => $postdata
+            ]
+        ];
+
+        return stream_context_create($opts);
     }
 
     /**
