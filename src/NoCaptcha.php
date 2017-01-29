@@ -52,6 +52,9 @@ class NoCaptcha
     /**
      * Render HTML captcha.
      *
+     * @param array $attributes
+     * @param string $lang
+     *
      * @return string
      */
     public function display($attributes = [], $lang = null)
@@ -108,6 +111,8 @@ class NoCaptcha
 
     /**
      * Get recaptcha js link.
+     *
+     * @param string $lang
      *
      * @return string
      */
