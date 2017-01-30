@@ -39,15 +39,13 @@ class NoCaptcha
     {
         $this->secret = $secret;
         $this->sitekey = $sitekey;
-        $this->http = new Client([
-            'timeout'  => 2.0,
-        ]);
+        $this->http = new Client([ 'timeout' => 2.0 ]);
     }
 
     /**
      * Render HTML captcha.
      *
-     * @param array $attributes
+     * @param array  $attributes
      * @param string $lang
      *
      * @return string
@@ -124,6 +122,7 @@ class NoCaptcha
         $response = $this->http->request('POST', static::VERIFY_URL, [
             'form_params' => $query,
         ]);
+
         return json_decode($response->getBody(), true);
     }
 
