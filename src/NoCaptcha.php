@@ -29,6 +29,17 @@ class NoCaptcha
      */
     protected $http;
 
+     /**
+     * @var \GuzzleHttp\Client
+     */
+    protected $http;
+
+    /**
+     * Check if the JS file is imported.
+     *
+     * @var bool
+     */
+    private static $imported = false;
     /**
      * NoCaptcha.
      *
@@ -53,10 +64,12 @@ class NoCaptcha
     public function display($attributes = [], $lang = null)
     {
         $attributes['data-sitekey'] = $this->sitekey;
+        $html ='';
 
-        $html = '<script src="'.$this->getJsLink($lang).'" async defer></script>'."\n";
+        !static::$imported &&  $html = '<script src="'.$this->getJsLink($lang).'" async defer></script>'."\n";
         $html .= '<div class="g-recaptcha"'.$this->buildAttributes($attributes).'></div>';
 
+        static::$imported = true;
         return $html;
     }
 
