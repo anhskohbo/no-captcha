@@ -66,10 +66,13 @@ class NoCaptcha
         $attributes['data-sitekey'] = $this->sitekey;
         $html ='';
 
-        !static::$imported &&  $html = '<script src="'.$this->getJsLink($lang).'" async defer></script>'."\n";
-        $html .= '<div class="g-recaptcha"'.$this->buildAttributes($attributes).'></div>';
+        if (!static::$imported) {
+            $html = '<script src="'.$this->getJsLink($lang).'" async defer></script>'."\n";
+            static::$imported = true;
+        }
 
-        static::$imported = true;
+        $html .= '<div class="g-recaptcha"'.$this->buildAttributes($attributes).'></div>';
+       
         return $html;
     }
 
