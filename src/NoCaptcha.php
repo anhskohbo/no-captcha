@@ -34,12 +34,13 @@ class NoCaptcha
      *
      * @param string $secret
      * @param string $sitekey
+     * @param array $options
      */
-    public function __construct($secret, $sitekey)
+    public function __construct($secret, $sitekey, $options = [])
     {
         $this->secret = $secret;
         $this->sitekey = $sitekey;
-        $this->http = new Client([ 'timeout' => 2.0 ]);
+        $this->http = new Client($options);
     }
 
     /**
