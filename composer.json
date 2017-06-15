@@ -18,5 +18,15 @@
         "psr-4": {
             "Anhskohbo\\NoCaptcha\\": "src/"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Anhskohbo\\NoCaptcha\\NoCaptchaServiceProvider"
+            ],
+            "aliases": {
+                "NoCaptcha": "Anhskohbo\\NoCaptcha\\Facades\\NoCaptcha"
+            }
+        }
     }
 }
