@@ -61,6 +61,36 @@ class NoCaptcha
     }
 
     /**
+     * Render captcha script tag
+     *
+     * @param null $lang
+     *
+     * @return string
+     */
+    public function displayScript($lang = null)
+    {
+        $html = '<script src="'.$this->getJsLink($lang).'" async defer></script>'."\n";
+
+        return $html;
+    }
+
+    /**
+     * Render the captcha field without the script tag.
+     *
+     * @param array $attributes
+     *
+     * @return string
+     */
+    public function displayCaptchaField($attributes = [])
+    {
+        $attributes['data-sitekey'] = $this->sitekey;
+
+        $html = '<div class="g-recaptcha"'.$this->buildAttributes($attributes).'></div>';
+
+        return $html;
+    }
+
+    /**
      * Verify no-captcha response.
      *
      * @param string $response
