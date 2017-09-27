@@ -41,7 +41,7 @@ class NoCaptcha
     {
         $this->secret = $secret;
         $this->sitekey = $sitekey;
-        $this->http = new Client([ 'timeout' => 30 ]);
+        $this->http = new Client([ 'timeout' => 2.0 ]);
     }
 
     /**
