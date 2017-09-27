@@ -32,6 +32,12 @@ NOCAPTCHA_SITEKEY=site-key
 
 ### Usage
 
+##### Init js source
+
+```
+ {!! app('captcha')->renderJs($lang = 'en', $callback = false, $onLoadClass = 'recaptchaCallback') !!}
+```
+
 ##### Display reCAPTCHA
 
 ```php
@@ -41,17 +47,7 @@ NOCAPTCHA_SITEKEY=site-key
 With custom attributes and language support:
 
 ```
-{!! app('captcha')->display($attributes = [], $lang = null, $callback = false, $onLoadClass = 'onLoadCallback'); !!}
-```
-
-```
- <script type="text/javascript">
-        var recaptchaCallback = function() {
-             $('.g-recaptcha').each(function(index, el) {
-                 grecaptcha.render(el, {'sitekey' : 'yourKey'});
-             });
-        };
-    </script>
+{!! app('captcha')->display($attributes = []); !!}
 ```
 
 ##### Validation
