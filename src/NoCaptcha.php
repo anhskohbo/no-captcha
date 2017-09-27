@@ -41,26 +41,33 @@ class NoCaptcha
     {
         $this->secret = $secret;
         $this->sitekey = $sitekey;
-        $this->http = new Client([ 'timeout' => 2.0 ]);
+        $this->http = new Client([ 'timeout' => 30 ]);
     }
 
     /**
      * Render HTML captcha.
      *
      * @param array  $attributes
-     * @param string $lang
-     * @param boolean $callback
      *
      * @return string
      */
-    public function display($attributes = [], $lang = null, $callback = false, $onLoadClass = 'onloadCallBack')
+    public function display($attributes = [])
     {
         $attributes['data-sitekey'] = $this->sitekey;
+        return '<div class="g-recaptcha"'.$this->buildAttributes($attributes).'></div>';
+    }
 
-        $html = '<script src="'.$this->getJsLink($lang, $callback, $onLoadClass).'" async defer></script>'."\n";
-        $html .= '<div class="g-recaptcha"'.$this->buildAttributes($attributes).'></div>';
-
-        return $html;
+    /**
+     * Render js source
+     *
+     * @param null $lang
+     * @param bool $callback
+     * @param string $onLoadClass
+     * @return string
+     */
+    public function renderJs($lang = null, $callback = false, $onLoadClass = 'onloadCallBack')
+    {
+        return '<script src="'.$this->getJsLink($lang, $callback, $onLoadClass).'" async defer></script>'."\n";
     }
 
     /**
