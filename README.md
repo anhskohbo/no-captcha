@@ -41,7 +41,17 @@ NOCAPTCHA_SITEKEY=site-key
 With custom attributes and language support:
 
 ```
-{!! app('captcha')->display($attributes = [], $lang = null); !!}
+{!! app('captcha')->display($attributes = [], $lang = null, $callback = false, $onLoadClass = 'onLoadCallback'); !!}
+```
+
+```
+ <script type="text/javascript">
+        var recaptchaCallback = function() {
+             $('.g-recaptcha').each(function(index, el) {
+                 grecaptcha.render(el, {'sitekey' : 'yourKey'});
+             });
+        };
+    </script>
 ```
 
 ##### Validation
