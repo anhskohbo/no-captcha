@@ -30,6 +30,12 @@ class NoCaptcha
     protected $http;
 
     /**
+     * Check if the JS file is imported.
+     *
+     * @var bool
+     */
+    private static $imported = false;
+    /**
      * NoCaptcha.
      *
      * @param string $secret
@@ -54,10 +60,13 @@ class NoCaptcha
     public function display($attributes = [], $lang = null)
     {
         $attributes['data-sitekey'] = $this->sitekey;
+        $html ='';
 
-        $html = '<script src="'.$this->getJsLink($lang).'" async defer></script>'."\n";
+        !static::$imported && $html = '<script src="'.$this->getJsLink($lang).'" async defer></script>'."\n";
+        static::$imported = true;
+
         $html .= '<div class="g-recaptcha"'.$this->buildAttributes($attributes).'></div>';
-
+       
         return $html;
     }
 
