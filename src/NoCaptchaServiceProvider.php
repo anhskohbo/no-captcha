@@ -55,7 +55,8 @@ class NoCaptchaServiceProvider extends ServiceProvider
         $this->app->singleton('captcha', function ($app) {
             return new NoCaptcha(
                 $app['config']['captcha.secret'],
-                $app['config']['captcha.sitekey']
+                $app['config']['captcha.sitekey'],
+                $app['config']['captcha.options']
             );
         });
     }
