@@ -9,6 +9,8 @@ class NoCaptcha
 {
     const CLIENT_API = 'https://www.google.com/recaptcha/api.js';
     const VERIFY_URL = 'https://www.google.com/recaptcha/api/siteverify';
+    const ON_LOAD_CLASS     = 'onloadCallBack';
+    const RENDER_TYPE       = 'explicit';
 
     /**
      * The recaptcha secret key.
@@ -47,18 +49,26 @@ class NoCaptcha
      * Render HTML captcha.
      *
      * @param array  $attributes
-     * @param string $lang
      *
      * @return string
      */
-    public function display($attributes = [], $lang = null)
+    public function display($attributes = [])
     {
         $attributes['data-sitekey'] = $this->sitekey;
+        return '<div class="g-recaptcha"'.$this->buildAttributes($attributes).'></div>';
+    }
 
-        $html = '<script src="'.$this->getJsLink($lang).'" async defer></script>'."\n";
-        $html .= '<div class="g-recaptcha"'.$this->buildAttributes($attributes).'></div>';
-
-        return $html;
+    /**
+     * Render js source
+     *
+     * @param null $lang
+     * @param bool $callback
+     * @param string $onLoadClass
+     * @return string
+     */
+    public function renderJs($lang = null, $callback = false, $onLoadClass = 'onloadCallBack')
+    {
+        return '<script src="'.$this->getJsLink($lang, $callback, $onLoadClass).'" async defer></script>'."\n";
     }
 
     /**
@@ -103,12 +113,29 @@ class NoCaptcha
      * Get recaptcha js link.
      *
      * @param string $lang
-     *
+     * @param boolean $callback
+     * @param string $onLoadClass
      * @return string
      */
-    public function getJsLink($lang = null)
+    public function getJsLink($lang = null, $callback = false, $onLoadClass = 'onloadCallBack')
     {
-        return $lang ? static::CLIENT_API.'?hl='.$lang : static::CLIENT_API;
+        $client_api = static::CLIENT_API;
+        $params = [];
+
+        $callback ? $this->setCallBackParams($params, $onLoadClass)  : false;
+        $lang ? $params['hl'] = $lang : null;
+
+        return $client_api . '?'. http_build_query($params);
+    }
+
+    /**
+     * @param $params
+     * @param $onLoadClass
+     */
+    protected function setCallBackParams(&$params, $onLoadClass)
+    {
+        $params['render'] = 'explicit';
+        $params['onload'] = $onLoadClass;
     }
 
     /**
