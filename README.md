@@ -1,5 +1,11 @@
-No CAPTCHA reCAPTCHA [![Build Status](https://travis-ci.org/anhskohbo/no-captcha.svg?branch=master&style=flat-square)](https://travis-ci.org/anhskohbo/no-captcha)
+No CAPTCHA reCAPTCHA
 ==========
+
+[![Build Status](https://travis-ci.org/anhskohbo/no-captcha.svg?branch=master&style=flat-square)](https://travis-ci.org/anhskohbo/no-captcha)
+[![Latest Stable Version](https://poser.pugx.org/anhskohbo/no-captcha/v/stable)](https://packagist.org/packages/anhskohbo/no-captcha)
+[![Total Downloads](https://poser.pugx.org/anhskohbo/no-captcha/downloads)](https://packagist.org/packages/anhskohbo/no-captcha)
+[![Latest Unstable Version](https://poser.pugx.org/anhskohbo/no-captcha/v/unstable)](https://packagist.org/packages/anhskohbo/no-captcha)
+[![License](https://poser.pugx.org/anhskohbo/no-captcha/license)](https://packagist.org/packages/anhskohbo/no-captcha)
 
 ![recaptcha_anchor 2x](https://cloud.githubusercontent.com/assets/1529454/5291635/1c426412-7b88-11e4-8d16-46161a081ece.gif)
 
@@ -15,70 +21,109 @@ composer require anhskohbo/no-captcha
 
 ### Setup
 
-Add ServiceProvider to the providers array in `app/config/app.php`.
+**_NOTE_** This package supports the auto-discovery feature of Laravel 5.5, So skip these `Setup` instructions if you're using Laravel 5.5.
 
-```
+In `app/config/app.php` add the following :
+
+1- The ServiceProvider to the providers array :
+
+```php
 Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
+```
+
+2- The class alias to the aliases array :
+
+```php
+'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
 ```
 
 ### Configuration
 
-Add `NOCAPTCHA_SECRET` and `NOCAPTCHA_SITEKEY` in **.env** file (without brackets):
+Add `NOCAPTCHA_SECRET` and `NOCAPTCHA_SITEKEY` in **.env** file :
 
 ```
 NOCAPTCHA_SECRET=secret-key
 NOCAPTCHA_SITEKEY=site-key
 ```
 
+(You can obtain them from [here](https://www.google.com/recaptcha/admin))
+
 ### Usage
 
-##### Init js source
+#### Init js source
 
-```
- {!! app('captcha')->renderJs($lang = 'en', $callback = false, $onLoadClass = 'recaptchaCallback') !!}
-```
-
-##### Display reCAPTCHA
+With default options :
 
 ```php
-{!! app('captcha')->display(); !!}
+ {!! NoCaptcha::renderJs() !!}
 ```
 
-With custom attributes and language support:
-
-```
-{!! app('captcha')->display($attributes = []); !!}
-```
-
-##### Validation
-
-Add `'g-recaptcha-response' => 'required|captcha'` to rules array.
+With [language support](https://developers.google.com/recaptcha/docs/language) or [onloadCallback](https://developers.google.com/recaptcha/docs/display#explicit_render) option :
 
 ```php
+ {!! NoCaptcha::renderJs('fr', true, 'recaptchaCallback') !!}
+```
 
+#### Display reCAPTCHA
+
+Default widget :
+
+```php
+{!! NoCaptcha::display() !!}
+```
+
+With [custom attributes](https://developers.google.com/recaptcha/docs/display#render_param) (theme, size, callback ...) :
+
+```php
+{!! NoCaptcha::display(['data-theme' => 'dark']) !!}
+```
+
+#### Validation
+
+Add `'g-recaptcha-response' => 'required|captcha'` to rules array :
+
+```php
 $validate = Validator::make(Input::all(), [
 	'g-recaptcha-response' => 'required|captcha'
 ]);
 
 ```
 
-### Testing
+##### Custom Validation Message
 
-When using the [Laravel Testing functionality](http://laravel.com/docs/5.1/testing), you will need to mock out the response for the captcha form element. To do this:
-
-1) Setup NoCaptcha facade in config/app.conf
+Add the following values to the `custom` array in the `validation` language file :
 
 ```php
-'NoCaptcha' => 'Anhskohbo\NoCaptcha\Facades\NoCaptcha'
+'custom' => [
+    'g-recaptcha-response' => [
+        'required' => 'Please verify that you are not a robot.',
+        'captcha' => 'Captcha error! try again later or contact site admin.',
+    ],
+],
 ```
 
-2) For any form tests involving the captcha, you can then mock the facade behaviour:
+Then check for captcha errors in the `Form` :
+
+```php
+@if ($errors->has('g-recaptcha-response'))
+    <span class="help-block">
+        <strong>{{ $errors->first('g-recaptcha-response') }}</strong>
+    </span>
+@endif
+```
+
+### Testing
+
+When using the [Laravel Testing functionality](http://laravel.com/docs/5.5/testing), you will need to mock out the response for the captcha form element.
+
+So for any form tests involving the captcha, you can do this by mocking the facade behavior:
 
 ```php
 // prevent validation error on captcha
 NoCaptcha::shouldReceive('verifyResponse')
     ->once()
     ->andReturn(true);
+
 // provide hidden input for your 'required' validation
 NoCaptcha::shouldReceive('display')
     ->zeroOrMoreTimes()
@@ -96,11 +141,11 @@ Checkout example below:
 
 require_once "vendor/autoload.php";
 
-$secret  = '';
-$sitekey = '';
+$secret  = 'CAPTCHA-SECRET';
+$sitekey = 'CAPTCHA-SITEKEY';
 $captcha = new \Anhskohbo\NoCaptcha\NoCaptcha($secret, $sitekey);
 
-if ( ! empty($_POST)) {
+if (! empty($_POST)) {
     var_dump($captcha->verifyResponse($_POST['g-recaptcha-response']));
     exit();
 }
@@ -112,6 +157,7 @@ if ( ! empty($_POST)) {
     <button type="submit">Submit</button>
 </form>
 
+<?php echo $captcha->renderJs(); ?>
 ```
 
 ## Contribute
