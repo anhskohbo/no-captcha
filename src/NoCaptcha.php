@@ -9,8 +9,6 @@ class NoCaptcha
 {
     const CLIENT_API = 'https://www.google.com/recaptcha/api.js';
     const VERIFY_URL = 'https://www.google.com/recaptcha/api/siteverify';
-    const ON_LOAD_CLASS     = 'onloadCallBack';
-    const RENDER_TYPE       = 'explicit';
 
     /**
      * The recaptcha secret key.
@@ -30,6 +28,13 @@ class NoCaptcha
      * @var \GuzzleHttp\Client
      */
     protected $http;
+
+    /**
+     * The cached verified responses.
+     *
+     * @var array
+     */
+    protected $verifiedResponses = [];
 
     /**
      * NoCaptcha.
@@ -85,13 +90,25 @@ class NoCaptcha
             return false;
         }
 
-        $response = $this->sendRequestVerify([
+        // Return true if response already verfied before.
+        if (in_array($response, $this->verifiedResponses)) {
+            return true;
+        }
+
+        $verifyResponse = $this->sendRequestVerify([
             'secret' => $this->secret,
             'response' => $response,
             'remoteip' => $clientIp,
         ]);
 
-        return isset($response['success']) && $response['success'] === true;
+        if (isset($verifyResponse['success']) && $verifyResponse['success'] === true) {
+            // A response can only be verified once from google, so we need to
+            // cache it to make it work in case we want to verify it multiple times.
+            $this->verifiedResponses[] = $response;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
