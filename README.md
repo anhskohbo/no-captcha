@@ -132,6 +132,24 @@ NoCaptcha::shouldReceive('display')
 
 You can then test the remainder of your form as normal.
 
+When using HTTP tests you can add the `g-recaptcha-response` to the request body for the 'required' validation:
+
+```php
+// prevent validation error on captcha
+NoCaptcha::shouldReceive('verifyResponse')
+    ->once()
+    ->andReturn(true);
+
+// POST request, with request body including g-recaptcha-response
+$response = $this->json('POST', '/register', [
+    'g-recaptcha-response' => '1',
+    'name' => 'John',
+    'email' => 'john@example.com',
+    'password' => '123456',
+    'password_confirmation' => '123456',
+]);
+```
+
 ## Without Laravel
 
 Checkout example below:
