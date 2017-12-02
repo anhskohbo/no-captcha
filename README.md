@@ -37,6 +37,12 @@ Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
 'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
 ```
 
+3- Publish the config file
+
+```ssh
+php artisan vendor:publish --provider="Anhskohbo\NoCaptcha\NoCaptchaServiceProvider"
+```
+
 ### Configuration
 
 Add `NOCAPTCHA_SECRET` and `NOCAPTCHA_SITEKEY` in **.env** file :
