@@ -88,7 +88,7 @@ class NoCaptcha
         
         $html = '';
         if ($this->api_requested === 1) {
-            $html .= '<script>function NoCaptchaCallback() { var elems = document.getElementsByClassName("g-recaptcha"); for (i=0; i<elems.length; i++) { grecaptcha.render(elems[i].id, {"sitekey" : "'.$this->sitekey.'"}); } }</script>'."\n";
+            $html .= '<script>function NoCaptchaCallback() { var elems = document.getElementsByClassName("g-recaptcha"); for (i=0; i<elems.length; i++) { var widgetId = grecaptcha.render(elems[i].id, {"sitekey" : "' . $this->sitekey . '"}); elems[i].setAttribute("widgetId", widgetId); } }</script>'."\n";
             $html .= '<script src="'.$this->getJsLink($lang).'?onload=NoCaptchaCallback&render=explicit" async defer></script>'."\n";
         }
         $html .= '<div class="g-recaptcha"'.$this->buildAttributes($attributes).'></div>';
