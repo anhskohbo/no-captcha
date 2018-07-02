@@ -85,6 +85,11 @@ With [custom attributes](https://developers.google.com/recaptcha/docs/display#re
 ```
 
 #### Validation
+Make sure you add the Session Facade in your controller:
+
+```php
+use Session;
+```
 
 Add `'g-recaptcha-response' => 'required|captcha'` to rules array :
 
