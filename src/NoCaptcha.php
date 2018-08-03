@@ -53,14 +53,47 @@ class NoCaptcha
     /**
      * Render HTML captcha.
      *
-     * @param array  $attributes
+     * @param array $attributes
      *
      * @return string
      */
     public function display($attributes = [])
     {
-        $attributes['data-sitekey'] = $this->sitekey;
-        return '<div class="g-recaptcha"'.$this->buildAttributes($attributes).'></div>';
+        $attributes = $this->prepareAttributes($attributes);
+        return '<div' . $this->buildAttributes($attributes) . '></div>';
+    }
+
+    /**
+     * @see display()
+     */
+    public function displayWidget($attributes = [])
+    {
+        return $this->display($attributes);
+    }
+
+    /**
+     * Display a Invisible reCAPTCHA by embedding a callback into a form submit button.
+     *
+     * @param string $formIdentifier the html ID of the form that should be submitted.
+     * @param string $text the text inside the form button
+     * @param array $attributes array of additional html elements
+     *
+     * @return string
+     */
+    public function displaySubmit($formIdentifier, $text = 'submit', $attributes = [])
+    {
+        $functionName = 'onSubmit' . str_replace(['-', '=', '\'', '"', '<', '>', '`'], '', $formIdentifier);
+        $attributes['data-callback'] = $functionName;
+        $attributes = $this->prepareAttributes($attributes);
+
+        $button = sprintf('<button%s><span>%s</span></button>', $this->buildAttributes($attributes), $text);
+        $javascript = sprintf(
+            '<script>function %s(){document.getElementById("%s").submit();}</script>',
+            $functionName,
+            $formIdentifier
+        );
+
+        return $button . $javascript;
     }
 
     /**
@@ -169,6 +202,24 @@ class NoCaptcha
         ]);
 
         return json_decode($response->getBody(), true);
+    }
+
+    /**
+     * Prepare HTML attributes and assure that the correct classes and attributes for captcha are inserted.
+     *
+     * @param array $attributes
+     *
+     * @return array
+     */
+    protected function prepareAttributes(array $attributes)
+    {
+        $attributes['data-sitekey'] = $this->sitekey;
+        if (!isset($attributes['class'])) {
+            $attributes['class'] = '';
+        }
+        $attributes['class'] = trim('g-recaptcha ' . $attributes['class']);
+
+        return $attributes;
     }
 
     /**
