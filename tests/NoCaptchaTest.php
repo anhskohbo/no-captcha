@@ -4,6 +4,9 @@ use Anhskohbo\NoCaptcha\NoCaptcha;
 
 class NoCaptchaTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * @var NoCaptcha
+     */
     private $captcha;
 
     public function setUp()
@@ -29,10 +32,23 @@ class NoCaptchaTest extends PHPUnit_Framework_TestCase
     {
         $this->assertTrue($this->captcha instanceof NoCaptcha);
 
-        $simple = '<div class="g-recaptcha" data-sitekey="{site-key}"></div>';
-        $withAttrs = '<div class="g-recaptcha" data-theme="light" data-sitekey="{site-key}"></div>';
+        $simple = '<div data-sitekey="{site-key}" class="g-recaptcha"></div>';
+        $withAttrs = '<div data-theme="light" data-sitekey="{site-key}" class="g-recaptcha"></div>';
 
         $this->assertEquals($this->captcha->display(), $simple);
         $this->assertEquals($this->captcha->display(['data-theme' => 'light']), $withAttrs);
+    }
+
+    public function testdisplaySubmit()
+    {
+        $this->assertTrue($this->captcha instanceof NoCaptcha);
+
+        $javascript = '<script>function onSubmittest(){document.getElementById("test").submit();}</script>';
+        $simple = '<button data-callback="onSubmittest" data-sitekey="{site-key}" class="g-recaptcha"><span>submit</span></button>';
+        $withAttrs = '<button data-theme="light" class="g-recaptcha 123" data-callback="onSubmittest" data-sitekey="{site-key}"><span>submit123</span></button>';
+
+        $this->assertEquals($this->captcha->displaySubmit('test'), $simple . $javascript);
+        $withAttrsResult = $this->captcha->displaySubmit('test','submit123',['data-theme' => 'light', 'class' => '123']);
+        $this->assertEquals($withAttrsResult, $withAttrs . $javascript);
     }
 }
