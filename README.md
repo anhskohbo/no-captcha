@@ -17,11 +17,11 @@ No CAPTCHA reCAPTCHA
 composer require anhskohbo/no-captcha
 ```
 
-## Laravel 5
+## Laravel 5 and above
 
 ### Setup
 
-**_NOTE_** This package supports the auto-discovery feature of Laravel 5.5, So skip these `Setup` instructions if you're using Laravel 5.5.
+**_NOTE_** This package supports the auto-discovery feature of Laravel 5.5 and above, So skip these `Setup` instructions if you're using Laravel 5.5 and above.
 
 In `app/config/app.php` add the following :
 
