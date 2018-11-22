@@ -1,5 +1,7 @@
 <?php
 
+namespace Anhskohbo\NoCaptcha\Tests;
+
 use Anhskohbo\NoCaptcha\NoCaptcha;
 
 class NoCaptchaTest extends PHPUnit_Framework_TestCase
@@ -23,9 +25,9 @@ class NoCaptchaTest extends PHPUnit_Framework_TestCase
         $withLang = '<script src="https://www.google.com/recaptcha/api.js?hl=vi" async defer></script>'."\n";
         $withCallback = '<script src="https://www.google.com/recaptcha/api.js?render=explicit&onload=myOnloadCallback" async defer></script>'."\n";
 
-        $this->assertEquals($this->captcha->renderJs(), $simple);
-        $this->assertEquals($this->captcha->renderJs('vi'), $withLang);
-        $this->assertEquals($this->captcha->renderJs(null, true, 'myOnloadCallback'), $withCallback);
+        $this->assertEquals($simple, $this->captcha->renderJs());
+        $this->assertEquals($withLang, $this->captcha->renderJs('vi'));
+        $this->assertEquals($withCallback, $this->captcha->renderJs(null, true, 'myOnloadCallback'));
     }
 
     public function testDisplay()
@@ -35,8 +37,8 @@ class NoCaptchaTest extends PHPUnit_Framework_TestCase
         $simple = '<div data-sitekey="{site-key}" class="g-recaptcha"></div>';
         $withAttrs = '<div data-theme="light" data-sitekey="{site-key}" class="g-recaptcha"></div>';
 
-        $this->assertEquals($this->captcha->display(), $simple);
-        $this->assertEquals($this->captcha->display(['data-theme' => 'light']), $withAttrs);
+        $this->assertEquals($simple, $this->captcha->display());
+        $this->assertEquals($withAttrs, $this->captcha->display(['data-theme' => 'light']));
     }
 
     public function testdisplaySubmit()
@@ -47,8 +49,18 @@ class NoCaptchaTest extends PHPUnit_Framework_TestCase
         $simple = '<button data-callback="onSubmittest" data-sitekey="{site-key}" class="g-recaptcha"><span>submit</span></button>';
         $withAttrs = '<button data-theme="light" class="g-recaptcha 123" data-callback="onSubmittest" data-sitekey="{site-key}"><span>submit123</span></button>';
 
-        $this->assertEquals($this->captcha->displaySubmit('test'), $simple . $javascript);
+        $this->assertEquals($simple . $javascript, $this->captcha->displaySubmit('test'));
         $withAttrsResult = $this->captcha->displaySubmit('test','submit123',['data-theme' => 'light', 'class' => '123']);
-        $this->assertEquals($withAttrsResult, $withAttrs . $javascript);
+        $this->assertEquals($withAttrs . $javascript, $withAttrsResult);
+    }
+
+    public function testdisplaySubmitWithCustomCallback()
+    {
+        $this->assertTrue($this->captcha instanceof NoCaptcha);
+
+        $withAttrs = '<button data-theme="light" class="g-recaptcha 123" data-callback="onSubmitCustomCallback" data-sitekey="{site-key}"><span>submit123</span></button>';
+
+        $withAttrsResult = $this->captcha->displaySubmit('test-custom','submit123',['data-theme' => 'light', 'class' => '123', 'data-callback' => 'onSubmitCustomCallback']);
+        $this->assertEquals($withAttrs, $withAttrsResult);
     }
 }
