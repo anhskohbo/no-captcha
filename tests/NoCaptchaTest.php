@@ -1,7 +1,5 @@
 <?php
 
-namespace Anhskohbo\NoCaptcha\Tests;
-
 use Anhskohbo\NoCaptcha\NoCaptcha;
 
 class NoCaptchaTest extends PHPUnit_Framework_TestCase
