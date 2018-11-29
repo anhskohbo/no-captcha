@@ -7,8 +7,18 @@ use GuzzleHttp\Client;
 
 class NoCaptcha
 {
-    const CLIENT_API = 'https://www.google.com/recaptcha/api.js';
-    const VERIFY_URL = 'https://www.google.com/recaptcha/api/siteverify';
+
+    /**
+     * google recaptcha client api
+     * @var string
+     */
+    private $client_api;
+
+    /**
+     * google recaptcha verify url
+     * @var string
+     */
+    private $verify_url;
 
     /**
      * The recaptcha secret key.
@@ -42,12 +52,21 @@ class NoCaptcha
      * @param string $secret
      * @param string $sitekey
      * @param array $options
+     * @param boolean $is_china
      */
-    public function __construct($secret, $sitekey, $options = [])
+    public function __construct($secret, $sitekey, $options = [], $is_china = false)
     {
         $this->secret = $secret;
         $this->sitekey = $sitekey;
         $this->http = new Client($options);
+
+        if ($is_china) {
+            $this->client_api = 'https://www.recaptcha.net/recaptcha/api.js';
+            $this->verify_url = 'https://www.recaptcha.net/recaptcha/api/siteverify';
+        } else {
+            $this->client_api = 'https://www.google.com/recaptcha/api.js';
+            $this->verify_url = 'https://www.google.com/recaptcha/api/siteverify';
+        }
     }
 
     /**
@@ -169,13 +188,12 @@ class NoCaptcha
      */
     public function getJsLink($lang = null, $callback = false, $onLoadClass = 'onloadCallBack')
     {
-        $client_api = static::CLIENT_API;
         $params = [];
 
         $callback ? $this->setCallBackParams($params, $onLoadClass)  : false;
         $lang ? $params['hl'] = $lang : null;
 
-        return $client_api . '?'. http_build_query($params);
+        return $this->client_api . '?'. http_build_query($params);
     }
 
     /**
@@ -197,7 +215,7 @@ class NoCaptcha
      */
     protected function sendRequestVerify(array $query = [])
     {
-        $response = $this->http->request('POST', static::VERIFY_URL, [
+        $response = $this->http->request('POST', $this->verify_url, [
             'form_params' => $query,
         ]);
 
