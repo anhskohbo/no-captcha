@@ -82,16 +82,20 @@ class NoCaptcha
      */
     public function displaySubmit($formIdentifier, $text = 'submit', $attributes = [])
     {
-        $functionName = 'onSubmit' . str_replace(['-', '=', '\'', '"', '<', '>', '`'], '', $formIdentifier);
-        $attributes['data-callback'] = $functionName;
+        $javascript = '';
+        if (!isset($attributes['data-callback'])) {
+            $functionName = 'onSubmit' . str_replace(['-', '=', '\'', '"', '<', '>', '`'], '', $formIdentifier);
+            $attributes['data-callback'] = $functionName;
+            $javascript = sprintf(
+                '<script>function %s(){document.getElementById("%s").submit();}</script>',
+                $functionName,
+                $formIdentifier
+            );
+        }
+
         $attributes = $this->prepareAttributes($attributes);
 
         $button = sprintf('<button%s><span>%s</span></button>', $this->buildAttributes($attributes), $text);
-        $javascript = sprintf(
-            '<script>function %s(){document.getElementById("%s").submit();}</script>',
-            $functionName,
-            $formIdentifier
-        );
 
         return $button . $javascript;
     }
