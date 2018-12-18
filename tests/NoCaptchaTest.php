@@ -28,13 +28,13 @@ class NoCaptchaTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($withCallback, $this->captcha->renderJs(null, true, 'myOnloadCallback'));
     }
 
-    public function testCallbackJs()
+    public function testSubmitJs()
     {
         $this->assertTrue($this->captcha instanceof NoCaptcha);
 
         $javascript = '<script>function onSubmitTest(){document.getElementById("test").submit();}</script>';
 
-        $this->assertEquals($javascript, $this->captcha->renderCallbackJs('test'));
+        $this->assertEquals($javascript, $this->captcha->renderSubmitJs('test'));
     }
 
     public function testDisplay()

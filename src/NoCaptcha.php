@@ -109,13 +109,13 @@ class NoCaptcha
     }
 
     /**
-     * Render callback js.
+     * Render callback js source for `displaySubmit`.
      *
      * @param string $formIdentifier
      *
      * @return string
      */
-    public function renderCallbackJs($formIdentifier)
+    public function renderSubmitJs($formIdentifier)
     {
         return sprintf(
             '<script>function %s(){document.getElementById("%s").submit();}</script>',
