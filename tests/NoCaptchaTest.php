@@ -36,11 +36,9 @@ class NoCaptchaTest extends PHPUnit_Framework_TestCase
 
         $simple = '<script src="https://www.google.com/recaptcha/api.js?render=%7Bsite-key%7D" async defer></script>'."\n";
         $withLang = '<script src="https://www.google.com/recaptcha/api.js?render=%7Bsite-key%7D&hl=vi" async defer></script>'."\n";
-        $withCallback = '<script src="https://www.google.com/recaptcha/api.js?render=%7Bsite-key%7D&render=explicit&onload=myOnloadCallback" async defer></script>'."\n";
 
         $this->assertEquals($simple, $v3captcha->renderJs());
         $this->assertEquals($withLang, $v3captcha->renderJs('vi'));
-        $this->assertEquals($withCallback, $v3captcha->renderJs(null, true, 'myOnloadCallback'));
     }
 
     public function testDisplay()
