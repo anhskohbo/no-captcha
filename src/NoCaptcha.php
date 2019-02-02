@@ -25,6 +25,14 @@ class NoCaptcha
     protected $sitekey;
 
     /**
+     * The ReCaptcha Version
+     * Defaults to : 2
+     *
+     * @var int
+     */
+    protected $version;
+
+    /**
      * @var \GuzzleHttp\Client
      */
     protected $http;
@@ -41,12 +49,14 @@ class NoCaptcha
      *
      * @param string $secret
      * @param string $sitekey
+     * @param int $version
      * @param array $options
      */
-    public function __construct($secret, $sitekey, $options = [])
+    public function __construct($secret, $sitekey, $version = 2, $options = [])
     {
         $this->secret = $secret;
         $this->sitekey = $sitekey;
+        $this->version = $version;
         $this->http = new Client($options);
     }
 
@@ -176,10 +186,24 @@ class NoCaptcha
         $client_api = static::CLIENT_API;
         $params = [];
 
+        if ($this->version > 2) {
+            $params['render'] = $this->sitekey;
+        }
+
         $callback ? $this->setCallBackParams($params, $onLoadClass)  : false;
         $lang ? $params['hl'] = $lang : null;
 
         return $client_api . '?'. http_build_query($params);
+    }
+
+    /**
+     * Get the recaptcha version
+     *
+     * @return int
+     */
+    public function getVersion()
+    {
+        return $this->version;
     }
 
     /**
