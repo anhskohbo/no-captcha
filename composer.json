@@ -1,7 +1,7 @@
 {
     "name": "anhskohbo/no-captcha",
     "description": "No CAPTCHA reCAPTCHA For Laravel.",
-    "keywords": ["recaptcha", "no-captcha", "captcha", "laravel", "laravel4", "laravel5"],
+    "keywords": ["recaptcha", "no-captcha", "captcha", "laravel", "laravel4", "laravel5", "laravel6"],
     "license": "MIT",
     "authors": [
         {
