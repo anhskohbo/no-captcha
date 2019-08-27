@@ -1,7 +1,7 @@
 {
     "name": "anhskohbo/no-captcha",
     "description": "No CAPTCHA reCAPTCHA For Laravel.",
-    "keywords": ["recaptcha", "no-captcha", "captcha", "laravel", "laravel4", "laravel5"],
+    "keywords": ["recaptcha", "no-captcha", "captcha", "laravel", "laravel4", "laravel5", "laravel6"],
     "license": "MIT",
     "authors": [
         {
@@ -11,7 +11,7 @@
     ],
     "require": {
         "php": ">=5.5.5",
-        "illuminate/support": "5.0.*|5.1.*|5.2.*|5.3.*|5.4.*|5.5.*|5.6.*|5.7.*|5.8.*",
+        "illuminate/support": "5.0.*|5.1.*|5.2.*|5.3.*|5.4.*|5.5.*|5.6.*|5.7.*|5.8.*|6.0.*",
         "guzzlehttp/guzzle": "^6.2"
     },
     "require-dev": {
