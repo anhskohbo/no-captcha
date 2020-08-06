@@ -15,6 +15,11 @@ class NoCaptchaTest extends PHPUnit_Framework_TestCase
         $this->captcha = new NoCaptcha('{secret-key}', '{site-key}');
     }
 
+    public function testRequestShouldWorks()
+    {
+        $response = $this->captcha->verifyResponse('should_false');
+    }
+
     public function testJsLink()
     {
         $this->assertTrue($this->captcha instanceof NoCaptcha);
