@@ -60,6 +60,7 @@ class NoCaptcha
     public function display($attributes = [])
     {
         $attributes = $this->prepareAttributes($attributes);
+
         return '<div' . $this->buildAttributes($attributes) . '></div>';
     }
 
@@ -82,22 +83,15 @@ class NoCaptcha
      */
     public function displaySubmit($formIdentifier, $text = 'submit', $attributes = [])
     {
-        $javascript = '';
         if (!isset($attributes['data-callback'])) {
-            $functionName = 'onSubmit' . str_replace(['-', '=', '\'', '"', '<', '>', '`'], '', $formIdentifier);
-            $attributes['data-callback'] = $functionName;
-            $javascript = sprintf(
-                '<script>function %s(){document.getElementById("%s").submit();}</script>',
-                $functionName,
-                $formIdentifier
-            );
+            $attributes['data-callback'] = $this->buildCallbackFunctionName($formIdentifier);
         }
 
         $attributes = $this->prepareAttributes($attributes);
 
         $button = sprintf('<button%s><span>%s</span></button>', $this->buildAttributes($attributes), $text);
 
-        return $button . $javascript;
+        return $button;
     }
 
     /**
@@ -106,11 +100,28 @@ class NoCaptcha
      * @param null $lang
      * @param bool $callback
      * @param string $onLoadClass
+     *
      * @return string
      */
     public function renderJs($lang = null, $callback = false, $onLoadClass = 'onloadCallBack')
     {
         return '<script src="'.$this->getJsLink($lang, $callback, $onLoadClass).'" async defer></script>'."\n";
+    }
+
+    /**
+     * Render callback js source for `displaySubmit`.
+     *
+     * @param string $formIdentifier
+     *
+     * @return string
+     */
+    public function renderSubmitJs($formIdentifier)
+    {
+        return sprintf(
+            '<script>function %s(){document.getElementById("%s").submit();}</script>',
+            $this->buildCallbackFunctionName($formIdentifier),
+            $formIdentifier
+        );
     }
 
     /**
@@ -217,10 +228,11 @@ class NoCaptcha
      */
     protected function prepareAttributes(array $attributes)
     {
-        $attributes['data-sitekey'] = $this->sitekey;
         if (!isset($attributes['class'])) {
             $attributes['class'] = '';
         }
+
+        $attributes['data-sitekey'] = $this->sitekey;
         $attributes['class'] = trim('g-recaptcha ' . $attributes['class']);
 
         return $attributes;
@@ -241,6 +253,22 @@ class NoCaptcha
             $html[] = $key.'="'.$value.'"';
         }
 
-        return count($html) ? ' '.implode(' ', $html) : '';
+        if (count($html)) {
+            return ' '.implode(' ', $html);
+        } else {
+            return '';
+        }
+    }
+
+    /**
+     * Build callback function name to use in `data-callback` attribute.
+     *
+     * @param string $formIdentifier
+     *
+     * @return string
+     */
+    protected function buildCallbackFunctionName($formIdentifier)
+    {
+        return 'onSubmit' . str_replace(['-', '=', '\'', '"', '<', '>', '`'], '', ucfirst($formIdentifier));
     }
 }
