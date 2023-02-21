@@ -9,18 +9,18 @@ class NoCaptchaTest extends PHPUnit_Framework_TestCase
      */
     private $captcha;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->captcha = new NoCaptcha('{secret-key}', '{site-key}');
     }
 
-    public function testRequestShouldWorks()
+    public function testRequestShouldWorks(): void
     {
         $response = $this->captcha->verifyResponse('should_false');
     }
 
-    public function testJsLink()
+    public function testJsLink(): void
     {
         $this->assertTrue($this->captcha instanceof NoCaptcha);
 
@@ -33,7 +33,7 @@ class NoCaptchaTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($withCallback, $this->captcha->renderJs(null, true, 'myOnloadCallback'));
     }
 
-    public function testDisplay()
+    public function testDisplay(): void
     {
         $this->assertTrue($this->captcha instanceof NoCaptcha);
 
@@ -44,7 +44,7 @@ class NoCaptchaTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($withAttrs, $this->captcha->display(['data-theme' => 'light']));
     }
 
-    public function testdisplaySubmit()
+    public function testdisplaySubmit(): void
     {
         $this->assertTrue($this->captcha instanceof NoCaptcha);
 
@@ -57,7 +57,7 @@ class NoCaptchaTest extends PHPUnit_Framework_TestCase
         $this->assertEquals($withAttrs . $javascript, $withAttrsResult);
     }
 
-    public function testdisplaySubmitWithCustomCallback()
+    public function testdisplaySubmitWithCustomCallback(): void
     {
         $this->assertTrue($this->captcha instanceof NoCaptcha);
 

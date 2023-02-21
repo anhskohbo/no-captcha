@@ -16,7 +16,7 @@ class NoCaptchaServiceProvider extends ServiceProvider
     /**
      * Bootstrap the application events.
      */
-    public function boot()
+    public function boot(): void
     {
         $app = $this->app;
 
@@ -36,7 +36,7 @@ class NoCaptchaServiceProvider extends ServiceProvider
     /**
      * Booting configure.
      */
-    protected function bootConfig()
+    protected function bootConfig(): void
     {
         $path = __DIR__.'/config/captcha.php';
 
@@ -50,7 +50,7 @@ class NoCaptchaServiceProvider extends ServiceProvider
     /**
      * Register the service provider.
      */
-    public function register()
+    public function register(): void
     {
         $this->app->singleton('captcha', function ($app) {
             return new NoCaptcha(
@@ -63,10 +63,8 @@ class NoCaptchaServiceProvider extends ServiceProvider
 
     /**
      * Get the services provided by the provider.
-     *
-     * @return array
      */
-    public function provides()
+    public function provides(): array
     {
         return ['captcha'];
     }
