@@ -20,6 +20,13 @@ class NoCaptchaServiceProvider extends ServiceProvider
     {
         $app = $this->app;
 
+        /**
+         * no use on terminal, at least for now
+         */
+        if ($app instanceof LaravelApplication && $app->runningInConsole()) {
+            return;
+        }
+
         $this->bootConfig();
 
         $app['validator']->extend('captcha', function ($attribute, $value) use ($app) {
@@ -52,6 +59,13 @@ class NoCaptchaServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        /**
+         * no use on terminal, at least for now
+         */
+        if ($this->app instanceof LaravelApplication && $this->app->runningInConsole()) {
+            return;
+        }
+        
         $this->app->singleton('captcha', function ($app) {
             return new NoCaptcha(
                 $app['config']['captcha.secret'],
