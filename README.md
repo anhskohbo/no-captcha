@@ -16,7 +16,10 @@ No CAPTCHA reCAPTCHA
 ```
 composer require anhskohbo/no-captcha
 ```
+## Video Tutorial 
 
+ [<img src="https://img.youtube.com/vi/v8R0FRkFOmg/0.jpg" width="250">](https://youtu.be/v8R0FRkFOmg)
+ 
 ## Laravel 5 and above
 
 ### Setup
